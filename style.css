@@ -27,6 +27,9 @@ html, body {
   -webkit-user-select: none;
   user-select: none;
   overflow: hidden;
+  overscroll-behavior: none;
+  position: fixed;
+  width: 100%;
 }
 
 #app {
@@ -69,6 +72,7 @@ html, body {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
   order: 1;
 }
 .page.active { display: flex; flex-direction: column; }
@@ -250,6 +254,7 @@ html, body {
   background: linear-gradient(145deg, #1a3a2e, #1e293b);
   border: 1px solid #2a5e4e;
   transform: rotateY(180deg);
+  overscroll-behavior-y: contain;
 }
 
 /* Side label */
@@ -494,6 +499,7 @@ html, body {
 .topic-list {
   flex: 1;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
   padding: 8px 20px 24px;
 }
 
@@ -571,6 +577,7 @@ html, body {
 .dashboard-content {
   flex: 1;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
   padding: 8px 20px 24px;
 }
 .dashboard-card {
