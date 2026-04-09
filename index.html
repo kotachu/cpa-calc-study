@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#3b82f6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>CPA計算ポイント学習</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Navigation -->
+    <nav id="bottom-nav">
+      <button class="nav-btn active" data-page="home">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        <span>HOME</span>
+      </button>
+      <button class="nav-btn" data-page="review">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        <span>REVIEW</span>
+      </button>
+      <button class="nav-btn" data-page="browse">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        <span>TOPIC</span>
+      </button>
+      <button class="nav-btn" data-page="dashboard">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+        <span>STATS</span>
+      </button>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="page-home" class="page active">
+      <header class="page-header">
+        <h1>CPA<span class="accent">calc</span></h1>
+        <p class="subtitle">計算ポイント学習</p>
+      </header>
+      <div class="home-content">
+        <div class="streak-card">
+          <div class="streak-number" id="streak-count">0</div>
+          <div class="streak-label">日連続学習</div>
+        </div>
+        <button class="review-start-btn" id="start-review">
+          <span class="btn-icon">&#9654;</span>
+          今日のレビューを開始
+          <span class="badge" id="today-count">0</span>
+        </button>
+        <div class="home-stats">
+          <div class="stat-item">
+            <div class="stat-value" id="total-cards">0</div>
+            <div class="stat-label">総カード数</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="mastered-cards">0</div>
+            <div class="stat-label">定着済み</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="weak-cards">0</div>
+            <div class="stat-label">要復習</div>
+          </div>
+        </div>
+        <div class="subject-progress">
+          <h3>科目別進捗</h3>
+          <div class="progress-row">
+            <span class="progress-label">財務会計論</span>
+            <div class="progress-bar"><div class="progress-fill" id="fin-progress"></div></div>
+            <span class="progress-pct" id="fin-pct">0%</span>
+          </div>
+          <div class="progress-row">
+            <span class="progress-label">管理会計論</span>
+            <div class="progress-bar"><div class="progress-fill" id="mgmt-progress"></div></div>
+            <span class="progress-pct" id="mgmt-pct">0%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Review Page -->
+    <div id="page-review" class="page">
+      <header class="review-header">
+        <button class="back-btn" id="review-back">&larr;</button>
+        <div class="review-progress">
+          <span id="review-current">0</span> / <span id="review-total">0</span>
+        </div>
+        <div class="review-subject-badge" id="review-subject-badge"></div>
+      </header>
+      <div class="card-container" id="card-container">
+        <div class="flashcard" id="flashcard">
+          <div class="card-inner">
+            <div class="card-front">
+              <div class="card-category" id="card-category"></div>
+              <div class="card-rank" id="card-rank"></div>
+              <div class="card-question" id="card-question"></div>
+              <div class="card-hint" id="card-hint"></div>
+              <div class="tap-hint">TAP to reveal</div>
+            </div>
+            <div class="card-back">
+              <div class="card-category" id="card-category-back"></div>
+              <div class="card-answer" id="card-answer"></div>
+              <div class="card-formula" id="card-formula"></div>
+              <div class="card-exam-years" id="card-exam-years"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="rating-buttons" id="rating-buttons" style="display:none">
+        <button class="rate-btn rate-again" data-rating="1">
+          <span>&#x21bb;</span>
+          もう一度
+        </button>
+        <button class="rate-btn rate-ok" data-rating="2">
+          <span>&#x2714;</span>
+          OK
+        </button>
+        <button class="rate-btn rate-perfect" data-rating="3">
+          <span>&#x2728;</span>
+          完璧
+        </button>
+      </div>
+      <!-- Review Complete -->
+      <div class="review-complete" id="review-complete" style="display:none">
+        <div class="complete-icon">&#x1f389;</div>
+        <h2>今日のレビュー完了!</h2>
+        <div class="complete-stats">
+          <div class="complete-stat">
+            <span class="complete-stat-value" id="complete-again">0</span>
+            <span class="complete-stat-label">もう一度</span>
+          </div>
+          <div class="complete-stat">
+            <span class="complete-stat-value" id="complete-ok">0</span>
+            <span class="complete-stat-label">OK</span>
+          </div>
+          <div class="complete-stat">
+            <span class="complete-stat-value" id="complete-perfect">0</span>
+            <span class="complete-stat-label">完璧</span>
+          </div>
+        </div>
+        <button class="review-start-btn" id="review-weak-btn" style="display:none">
+          苦手カードを復習
+        </button>
+        <button class="review-start-btn secondary" id="back-home-btn">
+          ホームに戻る
+        </button>
+      </div>
+    </div>
+
+    <!-- Browse Page -->
+    <div id="page-browse" class="page">
+      <header class="page-header compact">
+        <h2>論点一覧</h2>
+        <div class="search-box">
+          <input type="text" id="search-input" placeholder="キーワード検索...">
+        </div>
+        <div class="filter-row">
+          <button class="filter-btn active" data-subject="all">全科目</button>
+          <button class="filter-btn" data-subject="financial">財務会計</button>
+          <button class="filter-btn" data-subject="management">管理会計</button>
+        </div>
+        <div class="filter-row">
+          <button class="filter-btn rank-filter active" data-rank="all">全ランク</button>
+          <button class="filter-btn rank-filter" data-rank="A">A</button>
+          <button class="filter-btn rank-filter" data-rank="B">B</button>
+          <button class="filter-btn rank-filter" data-rank="C">C</button>
+          <button class="filter-btn rank-filter" data-rank="weak">&#x26a0; 苦手</button>
+        </div>
+      </header>
+      <div class="topic-list" id="topic-list"></div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="page-dashboard" class="page">
+      <header class="page-header compact">
+        <h2>学習ダッシュボード</h2>
+      </header>
+      <div class="dashboard-content">
+        <div class="dashboard-card">
+          <h3>Box別カード分布</h3>
+          <div class="box-chart" id="box-chart"></div>
+        </div>
+        <div class="dashboard-card">
+          <h3>苦手論点 TOP10</h3>
+          <div id="weak-topics-list"></div>
+        </div>
+        <div class="dashboard-card">
+          <h3>学習履歴（直近7日）</h3>
+          <div class="history-chart" id="history-chart"></div>
+        </div>
+        <div class="dashboard-card">
+          <h3>設定</h3>
+          <div class="setting-row">
+            <label>1日のカード枚数</label>
+            <select id="daily-card-count">
+              <option value="10">10枚</option>
+              <option value="15" selected>15枚</option>
+              <option value="20">20枚</option>
+              <option value="30">30枚</option>
+            </select>
+          </div>
+          <div class="setting-row">
+            <label>データリセット</label>
+            <button class="danger-btn" id="reset-btn">学習進捗をリセット</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="data/financial.js"></script>
+  <script src="data/management.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
