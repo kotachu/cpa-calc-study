@@ -199,18 +199,21 @@
 
   // --- Review ---
   function bindReview() {
-    const cardContainer = document.getElementById('card-container');
     const flashcard = document.getElementById('flashcard');
+    const flipBtnRow = document.getElementById('flip-btn-row');
+    const flipBtn = document.getElementById('flip-btn');
 
-    cardContainer.addEventListener('click', (e) => {
-      // Don't flip if clicking rating buttons
-      if (e.target.closest('.rating-buttons')) return;
-      if (e.target.closest('.rate-btn')) return;
+    // Tap card-front to flip to back
+    document.querySelector('.card-front').addEventListener('click', () => {
+      flashcard.classList.add('flipped');
+      document.getElementById('rating-buttons').style.display = 'flex';
+      flipBtnRow.style.display = 'flex';
+    });
+
+    // Flip button to toggle between front and back
+    flipBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
       flashcard.classList.toggle('flipped');
-      // Show rating buttons once the card has been seen
-      if (flashcard.classList.contains('flipped')) {
-        document.getElementById('rating-buttons').style.display = 'flex';
-      }
     });
 
     document.querySelectorAll('.rate-btn').forEach(btn => {
@@ -256,6 +259,7 @@
     const card = reviewQueue[reviewIndex];
     const flashcard = document.getElementById('flashcard');
     flashcard.classList.remove('flipped');
+    document.getElementById('flip-btn-row').style.display = 'none';
     document.getElementById('rating-buttons').style.display = 'none';
 
     document.getElementById('review-current').textContent = reviewIndex + 1;

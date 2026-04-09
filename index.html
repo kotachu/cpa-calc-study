@@ -91,13 +91,15 @@
         <div class="flashcard" id="flashcard">
           <div class="card-inner">
             <div class="card-front">
+              <div class="card-side-label">QUESTION</div>
               <div class="card-category" id="card-category"></div>
               <div class="card-rank" id="card-rank"></div>
               <div class="card-question" id="card-question"></div>
               <div class="card-hint" id="card-hint"></div>
-              <div class="tap-hint">TAP to reveal</div>
+              <div class="tap-hint">TAP で回答を表示</div>
             </div>
             <div class="card-back">
+              <div class="card-side-label">ANSWER</div>
               <div class="card-category" id="card-category-back"></div>
               <div class="card-answer" id="card-answer"></div>
               <div class="card-journal" id="card-journal"></div>
@@ -106,6 +108,9 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="flip-btn-row" id="flip-btn-row" style="display:none">
+        <button class="flip-btn" id="flip-btn">&#x21c5; カードを裏返す</button>
       </div>
       <div class="rating-buttons" id="rating-buttons" style="display:none">
         <button class="rate-btn rate-again" data-rating="1">

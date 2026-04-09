@@ -208,29 +208,39 @@ html, body {
   align-items: center;
   justify-content: center;
   padding: 16px;
-  cursor: pointer;
+  perspective: 1200px;
 }
 
 .flashcard {
   width: 100%;
   max-width: 400px;
-  min-height: 320px;
-  position: relative;
+  height: calc(100vh - 220px);
+  max-height: 520px;
+  cursor: pointer;
 }
 
 .card-inner {
   width: 100%;
-  min-height: 320px;
+  height: 100%;
+  transition: transform 0.5s ease;
+  transform-style: preserve-3d;
   position: relative;
 }
+.flashcard.flipped .card-inner { transform: rotateY(180deg); }
 
 .card-front, .card-back {
+  position: absolute;
+  top: 0; left: 0;
   width: 100%;
-  min-height: 320px;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   border-radius: var(--radius);
   padding: 24px;
+  padding-top: 36px;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 .card-front {
   background: linear-gradient(145deg, #1e3a5f, #1e293b);
@@ -239,12 +249,30 @@ html, body {
 .card-back {
   background: linear-gradient(145deg, #1a3a2e, #1e293b);
   border: 1px solid #2a5e4e;
-  overflow-y: auto;
-  display: none;
-  max-height: calc(100vh - 180px);
+  transform: rotateY(180deg);
 }
-.flashcard.flipped .card-front { display: none; }
-.flashcard.flipped .card-back { display: flex; }
+
+/* Side label */
+.card-side-label {
+  position: absolute;
+  top: 10px;
+  left: 16px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 4px;
+  z-index: 1;
+}
+.card-front .card-side-label {
+  background: rgba(59, 130, 246, 0.3);
+  color: var(--accent-light);
+}
+.card-back .card-side-label {
+  background: rgba(34, 197, 94, 0.3);
+  color: var(--green);
+}
 
 .card-category {
   font-size: 12px;
@@ -359,6 +387,27 @@ html, body {
   display: none;
 }
 .card-exam-years.visible { display: block; }
+
+.flip-btn-row {
+  display: flex;
+  justify-content: center;
+  padding: 8px 16px 0;
+  flex-shrink: 0;
+}
+.flip-btn {
+  padding: 10px 24px;
+  border: 1px solid #475569;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text-muted);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.flip-btn:active {
+  background: rgba(255,255,255,0.1);
+  color: var(--text);
+}
 
 .rating-buttons {
   display: flex;
