@@ -199,16 +199,23 @@
 
   // --- Review ---
   function bindReview() {
+    const cardContainer = document.getElementById('card-container');
     const flashcard = document.getElementById('flashcard');
-    flashcard.addEventListener('click', () => {
-      if (!flashcard.classList.contains('flipped')) {
-        flashcard.classList.add('flipped');
+
+    cardContainer.addEventListener('click', (e) => {
+      // Don't flip if clicking rating buttons
+      if (e.target.closest('.rating-buttons')) return;
+      if (e.target.closest('.rate-btn')) return;
+      flashcard.classList.toggle('flipped');
+      // Show rating buttons once the card has been seen
+      if (flashcard.classList.contains('flipped')) {
         document.getElementById('rating-buttons').style.display = 'flex';
       }
     });
 
     document.querySelectorAll('.rate-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
         const rating = parseInt(btn.dataset.rating);
         rateCard(rating);
       });
@@ -275,6 +282,32 @@
     document.getElementById('card-category-back').textContent =
       card.category + ' > ' + card.title;
     document.getElementById('card-answer').textContent = card.back;
+
+    // Journal entries
+    const journalEl = document.getElementById('card-journal');
+    if (card.journal && card.journal.length > 0) {
+      let html = '<div class="card-journal-title">仕訳</div>';
+      card.journal.forEach(j => {
+        if (j.label) html += `<div class="journal-label">${j.label}</div>`;
+        html += '<table class="journal-table"><tr><th>借方</th><th></th><th>貸方</th><th></th></tr>';
+        j.entries.forEach(e => {
+          const dr = e.dr || '';
+          const cr = e.cr || '';
+          const drAmt = e.drAmt || '';
+          const crAmt = e.crAmt || '';
+          html += `<tr>
+            <td class="dr">${dr}</td><td class="amount">${drAmt}</td>
+            <td class="cr">${cr}</td><td class="amount">${crAmt}</td>
+          </tr>`;
+        });
+        html += '</table>';
+      });
+      journalEl.innerHTML = html;
+      journalEl.classList.add('visible');
+    } else {
+      journalEl.innerHTML = '';
+      journalEl.classList.remove('visible');
+    }
 
     const formulaEl = document.getElementById('card-formula');
     if (card.formula) {

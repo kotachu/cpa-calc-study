@@ -208,32 +208,25 @@ html, body {
   align-items: center;
   justify-content: center;
   padding: 16px;
-  perspective: 1000px;
+  cursor: pointer;
 }
 
 .flashcard {
   width: 100%;
   max-width: 400px;
   min-height: 320px;
-  cursor: pointer;
   position: relative;
 }
 
 .card-inner {
   width: 100%;
   min-height: 320px;
-  transition: transform 0.5s;
-  transform-style: preserve-3d;
   position: relative;
 }
-.flashcard.flipped .card-inner { transform: rotateY(180deg); }
 
 .card-front, .card-back {
-  position: absolute;
-  top: 0; left: 0;
   width: 100%;
   min-height: 320px;
-  backface-visibility: hidden;
   border-radius: var(--radius);
   padding: 24px;
   display: flex;
@@ -246,9 +239,12 @@ html, body {
 .card-back {
   background: linear-gradient(145deg, #1a3a2e, #1e293b);
   border: 1px solid #2a5e4e;
-  transform: rotateY(180deg);
   overflow-y: auto;
+  display: none;
+  max-height: calc(100vh - 180px);
 }
+.flashcard.flipped .card-front { display: none; }
+.flashcard.flipped .card-back { display: flex; }
 
 .card-category {
   font-size: 12px;
@@ -304,6 +300,45 @@ html, body {
   line-height: 1.8;
   white-space: pre-wrap;
   flex: 1;
+}
+.card-journal {
+  margin-top: 12px;
+  display: none;
+}
+.card-journal.visible { display: block; }
+.card-journal-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--orange);
+  margin-bottom: 6px;
+}
+.journal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.journal-table th {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 4px 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  text-align: left;
+}
+.journal-table td {
+  padding: 4px 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  vertical-align: top;
+}
+.journal-table .dr { color: #93c5fd; }
+.journal-table .cr { color: #fca5a5; padding-left: 16px; }
+.journal-table .amount { text-align: right; font-family: 'SF Mono', 'Menlo', monospace; font-size: 12px; }
+.journal-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  margin-top: 8px;
 }
 .card-formula {
   margin-top: 12px;
